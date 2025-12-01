@@ -1,24 +1,55 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Leaf } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 使用 useNavigate 进行页面跳转
+  const handleNavigation = (path: string) => {
+    setIsOpen(false);
+    if (location.pathname !== path) {
+      navigate(path);
+    }
+  };
+
+  const navItems = [
+    { name: '首页', path: '/' },
+    { name: '核心功能', path: '/features' },
+    { name: '五大领域', path: '/themes' },
+    { name: '数字人林小汇', path: '/digital-human' },
+    { name: '交易平台', path: '/platform' },
+  ];
 
   return (
     <nav className="bg-white/80 backdrop-blur-md fixed w-full z-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center">
+          <div 
+            onClick={() => handleNavigation('/')}
+            className="flex items-center cursor-pointer"
+          >
             <Leaf className="h-8 w-8 text-eco-green-600" />
             <span className="ml-2 text-xl font-bold text-slate-800">碳汇云联</span>
           </div>
           
+          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            <a href="#home" className="text-slate-600 hover:text-eco-green-600 transition-colors">首页</a>
-            <a href="#features" className="text-slate-600 hover:text-eco-green-600 transition-colors">核心功能</a>
-            <a href="#themes" className="text-slate-600 hover:text-eco-green-600 transition-colors">五大领域</a>
-            <a href="#digital-human" className="text-slate-600 hover:text-eco-green-600 transition-colors">数字人林小汇</a>
-            <a href="#platform" className="text-slate-600 hover:text-eco-green-600 transition-colors">交易平台</a>
+            {navItems.map((item) => (
+              <button
+                key={item.path}
+                onClick={() => handleNavigation(item.path)}
+                className={`transition-colors ${
+                  location.pathname === item.path 
+                    ? 'text-eco-green-600 font-semibold' 
+                    : 'text-slate-600 hover:text-eco-green-600'
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
           </div>
 
           <div className="hidden md:flex">
@@ -27,6 +58,7 @@ export default function Navbar() {
             </button>
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="text-slate-600">
               {isOpen ? <X /> : <Menu />}
@@ -35,13 +67,22 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
-          <a href="#home" className="block py-2 text-slate-600">首页</a>
-          <a href="#features" className="block py-2 text-slate-600">核心功能</a>
-          <a href="#themes" className="block py-2 text-slate-600">五大领域</a>
-          <a href="#digital-human" className="block py-2 text-slate-600">数字人林小汇</a>
-          <a href="#platform" className="block py-2 text-slate-600">交易平台</a>
+          {navItems.map((item) => (
+            <button
+              key={item.path}
+              onClick={() => handleNavigation(item.path)}
+              className={`block w-full text-left py-2 ${
+                location.pathname === item.path 
+                  ? 'text-eco-green-600 font-semibold' 
+                  : 'text-slate-600'
+              }`}
+            >
+              {item.name}
+            </button>
+          ))}
         </div>
       )}
     </nav>

@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Activity, ShieldCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Hero() {
+  const Navigation=useNavigate()
   return (
     <section id="home" className="relative pt-24 pb-12 lg:pt-32 lg:pb-24 overflow-hidden bg-gradient-to-b from-eco-green-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -21,7 +23,7 @@ export default function Hero() {
               赋能乡村振兴，助力企业达成碳中和目标。
             </p>
             <div className="mt-8 flex gap-4">
-              <button className="bg-eco-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-eco-green-700 transition-all flex items-center shadow-lg shadow-eco-green-200">
+              <button className="bg-eco-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-eco-green-700 transition-all flex items-center shadow-lg shadow-eco-green-200" >
                 开始交易 <ArrowRight className="ml-2 h-5 w-5" />
               </button>
               <button className="bg-white text-slate-700 border border-slate-200 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-all">
