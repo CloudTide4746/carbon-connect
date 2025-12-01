@@ -1,4 +1,3 @@
-import React from 'react';
 import { Sprout, Zap, Heart, Palette, Landmark } from 'lucide-react';
 
 const themes = [

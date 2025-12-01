@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Menu, X, Leaf, BarChart3, Globe, Sprout, Cpu, Scan, Users, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { Menu, X, Leaf } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
