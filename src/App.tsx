@@ -17,27 +17,27 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-        loader: async () => { await delay(300); return null; }
+        loader: async () => { await delay(70); return null; }
       },
       {
         path: "features",
         element: <FeaturesPage />,
-        loader: async () => { await delay(500); return null; }
+        loader: async () => { await delay(125); return null; }
       },
       {
         path: "themes",
         element: <ThemesPage />,
-        loader: async () => { await delay(500); return null; }
+        loader: async () => { await delay(125); return null; }
       },
       {
         path: "digital-human",
         element: <DigitalHumanPage />,
-        loader: async () => { await delay(600); return null; }
+        loader: async () => { await delay(100); return null; }
       },
       {
         path: "platform",
         element: <Platform />,
-        loader: async () => { await delay(800); return null; }
+        loader: async () => { await delay(100); return null; }
       }
     ]
   }

@@ -30,7 +30,7 @@ const projects = [
     type: '造林碳汇',
     volume: '50,000 吨',
     price: 72.00,
-    image: 'https://images.unsplash.com/photo-1448375240586-dfd8f3f7d8aa?auto=format&fit=crop&q=80&w=2070',
+    image: 'https://picsum.photos/seed/carbon1/800/600',
     tags: ['VCS认证', '生物多样性保护']
   },
   {
@@ -40,7 +40,7 @@ const projects = [
     type: '森林经营',
     volume: '120,000 吨',
     price: 65.50,
-    image: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=2070',
+    image: 'https://picsum.photos/seed/carbon2/800/600',
     tags: ['CCER申请中', '国有林场']
   },
   {
@@ -50,7 +50,7 @@ const projects = [
     type: '竹林碳汇',
     volume: '30,000 吨',
     price: 78.20,
-    image: 'https://images.unsplash.com/photo-1596326252969-638e9144728d?auto=format&fit=crop&q=80&w=2070',
+    image: 'https://picsum.photos/seed/carbon3/800/600',
     tags: ['精准扶贫', '高固碳率']
   },
   {
@@ -60,7 +60,7 @@ const projects = [
     type: '植被恢复',
     volume: '45,000 吨',
     price: 69.80,
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=2070',
+    image: 'https://picsum.photos/seed/carbon4/800/600',
     tags: ['乡村振兴', '水土保持']
   },
 ];

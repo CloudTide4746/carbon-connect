@@ -7,7 +7,7 @@ export default function Footer() {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="https://images.unsplash.com/photo-1448375240586-dfd8f3f7d8aa?auto=format&fit=crop&q=80&w=2070" 
+          src="https://picsum.photos/seed/forest/2070/1000" 
           alt="Forest Background" 
           className="w-full h-full object-cover opacity-10"
         />

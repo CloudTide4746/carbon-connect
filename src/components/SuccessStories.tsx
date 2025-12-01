@@ -8,7 +8,7 @@ const stories = [
     title: "竹林变金山，村民增收新途径",
     quote: "自从加入了碳汇项目，我们村的万亩竹林不仅卖出了竹子，连空气都变成了钱。",
     author: "李村长",
-    image: "https://images.unsplash.com/photo-1596326252969-638e9144728d?auto=format&fit=crop&q=80&w=2070",
+    image: "https://picsum.photos/seed/story1/800/600",
     impact: "增收 230 万元/年"
   },
   {
@@ -17,7 +17,7 @@ const stories = [
     title: "荒漠化治理与碳中和的双赢",
     quote: "通过科学的林业管理，我们将沙地变成了绿洲，现在这些树木正在为全球降温。",
     author: "张林场主",
-    image: "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=2070",
+    image: "https://picsum.photos/seed/story2/800/600",
     impact: "固碳 50 万吨/年"
   },
   {
@@ -26,7 +26,7 @@ const stories = [
     title: "生物多样性保护的经济价值",
     quote: "碳汇交易让我们有资金去保护这里的珍稀动植物，生态环境越来越好了。",
     author: "王巡护员",
-    image: "https://images.unsplash.com/photo-1448375240586-dfd8f3f7d8aa?auto=format&fit=crop&q=80&w=2070",
+    image: "https://picsum.photos/seed/story3/800/600",
     impact: "保护面积 3 万公顷"
   }
 ];
