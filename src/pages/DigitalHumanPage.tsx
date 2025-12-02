@@ -1,6 +1,6 @@
 /** @format */
 
-import { Bot, MessageSquare, Mic, Send, Loader2 } from "lucide-react";
+import { Bot, MessageSquare, Mic, Send, Loader2, FileText, Calculator, TreePine } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -30,15 +30,18 @@ export default function DigitalHumanPage() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async () => {
+  const handleSend = async (textOverride?: string, systemPrompt?: string) => {
     if (isLoading) return;
-    if (!input.trim()) {
+    const textToSend = textOverride || input;
+    
+    if (!textToSend.trim()) {
       toast.warning("请输入内容后再发送");
       return;
     }
 
-    const userMessage = input.trim();
-    setInput("");
+    const userMessage = textToSend.trim();
+    if (!textOverride) setInput(""); // Only clear input if typed manually
+    
     setMessages((prev) => [...prev, { type: "user", text: userMessage }]);
     setIsLoading(true);
 
@@ -58,7 +61,7 @@ export default function DigitalHumanPage() {
     apiMessages.push({ role: "user", content: userMessage });
 
     try {
-      const response = await chatWithDeepSeek(apiMessages);
+      const response = await chatWithDeepSeek(apiMessages, systemPrompt);
       setMessages((prev) => [...prev, { type: "bot", text: response }]);
     } catch (error) {
       toast.error("请求失败，请稍后再试");
@@ -71,6 +74,30 @@ export default function DigitalHumanPage() {
     }
   };
 
+  const aiTools = [
+    {
+      icon: FileText,
+      label: "政策解读",
+      color: "bg-blue-500",
+      prompt: "请为我解读最新的林业碳汇相关政策，重点关注CCER重启后的变化和机会。",
+      desc: "深度解析最新碳汇政策红利"
+    },
+    {
+      icon: Calculator,
+      label: "碳汇估算",
+      color: "bg-green-500",
+      prompt: "我有一片林地，请帮我粗略估算一下每亩林地大概能产生多少碳汇收益？请列出计算依据。",
+      desc: "快速评估林地潜在价值"
+    },
+    {
+      icon: TreePine,
+      label: "项目策划",
+      color: "bg-orange-500",
+      prompt: "我想开发一个林业碳汇项目，请为我生成一份简要的项目开发策划书大纲，包含关键步骤和风险提示。",
+      desc: "生成专业的项目开发方案"
+    }
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -79,41 +106,67 @@ export default function DigitalHumanPage() {
       className='pt-20 min-h-screen bg-slate-900 text-white'
     >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20'>
-        <div className='grid lg:grid-cols-2 gap-12 items-center'>
-          {/* Avatar Visualization */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className='relative'
-          >
-            <div className='aspect-square rounded-full bg-gradient-to-b from-eco-green-500/20 to-transparent flex items-center justify-center relative overflow-hidden border border-white/10 shadow-2xl shadow-eco-green-900/50'>
+        <div className='grid lg:grid-cols-3 gap-8 items-start'>
+          {/* Left Column: Avatar & Tools */}
+          <div className="lg:col-span-1 space-y-8">
+            {/* Avatar */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className='relative aspect-square rounded-full bg-gradient-to-b from-eco-green-500/20 to-transparent flex items-center justify-center overflow-hidden border border-white/10 shadow-2xl shadow-eco-green-900/50'
+            >
               <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse"></div>
               <div className='text-[150px]'>👩‍🌾</div>
               <div className='absolute bottom-10 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-4 py-2 rounded-full border border-white/20 flex items-center gap-2'>
                 <div className='w-2 h-2 bg-green-400 rounded-full animate-ping'></div>
                 <span className='text-sm font-mono text-green-400'>Online</span>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Interaction Area */}
-          <div>
-            <div className='mb-8'>
-              <h1 className='text-4xl font-bold mb-4'>
+            {/* AI Tools Grid */}
+            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 backdrop-blur-sm">
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <Bot className="w-5 h-5 text-eco-green-400" />
+                智能工具箱
+              </h3>
+              <div className="space-y-3">
+                {aiTools.map((tool, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleSend(tool.prompt)}
+                    disabled={isLoading}
+                    className="w-full flex items-center gap-4 p-3 rounded-xl bg-slate-700/50 hover:bg-slate-700 border border-transparent hover:border-slate-600 transition-all group text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <div className={`p-2 rounded-lg ${tool.color} text-white group-hover:scale-110 transition-transform`}>
+                      <tool.icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-slate-200">{tool.label}</div>
+                      <div className="text-xs text-slate-400">{tool.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Chat Interface */}
+          <div className="lg:col-span-2">
+            <div className='mb-6'>
+              <h1 className='text-4xl font-bold mb-2'>
                 数字人 <span className='text-eco-green-400'>林小汇</span>
               </h1>
-              <p className='text-slate-400 text-lg'>
+              <p className='text-slate-400'>
                 基于多模态大模型的农业碳汇科普助手，提供7x24小时智能咨询服务。
               </p>
             </div>
 
-            {/* Chat Interface */}
-            <div className='bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl h-[500px] flex flex-col'>
+            <div className='bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-xl h-[600px] flex flex-col'>
               <div className='p-4 bg-slate-900/50 border-b border-slate-700 flex items-center gap-3'>
-                <Bot className='w-5 h-5 text-eco-green-400' />
-                <span className='font-semibold'>智能对话演示</span>
+                <MessageSquare className='w-5 h-5 text-eco-green-400' />
+                <span className='font-semibold'>智能对话窗口</span>
               </div>
-
+              
               <div className='flex-grow p-4 overflow-y-auto space-y-4 custom-scrollbar scroll-smooth'>
                 {messages.map((msg, idx) => (
                   <div
@@ -123,7 +176,7 @@ export default function DigitalHumanPage() {
                     }`}
                   >
                     <div
-                      className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                      className={`max-w-[85%] rounded-2xl px-5 py-3.5 text-sm leading-relaxed whitespace-pre-wrap ${
                         msg.type === "user"
                           ? "bg-eco-green-600 text-white rounded-tr-sm"
                           : "bg-slate-700 text-slate-200 rounded-tl-sm"
@@ -161,7 +214,7 @@ export default function DigitalHumanPage() {
                     <Mic className='w-5 h-5' />
                   </button>
                   <button
-                    onClick={handleSend}
+                    onClick={() => handleSend()}
                     disabled={isLoading}
                     className='p-3 rounded-xl bg-eco-green-600 hover:bg-eco-green-500 transition-colors text-white disabled:opacity-50 disabled:cursor-not-allowed'
                   >

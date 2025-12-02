@@ -15,12 +15,17 @@ export interface ChatMessage {
 /**
  * 调用 DeepSeek API 进行对话
  * @param messages 历史消息列表
+ * @param systemPrompt 可选的系统提示词，用于覆盖默认设定
  * @returns Promise<string> AI的回复
  */
 export const chatWithDeepSeek = async (
-  messages: ChatMessage[]
+  messages: ChatMessage[],
+  systemPrompt?: string
 ): Promise<string> => {
   try {
+    const defaultSystemPrompt =
+      "你是一个农业碳汇科普助手，名叫林小汇。你的职责是解答关于乡村振兴、碳汇交易、林业监测等问题。请保持回答专业、亲切且简洁。";
+
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
@@ -32,8 +37,7 @@ export const chatWithDeepSeek = async (
         messages: [
           {
             role: "system",
-            content:
-              "你是一个农业碳汇科普助手，名叫林小汇。你的职责是解答关于乡村振兴、碳汇交易、林业监测等问题。请保持回答专业、亲切且简洁。",
+            content: systemPrompt || defaultSystemPrompt,
           },
           ...messages,
         ],

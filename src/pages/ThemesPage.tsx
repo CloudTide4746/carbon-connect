@@ -71,11 +71,8 @@ export default function ThemesPage() {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='space-y-12'>
             {themes.map((theme, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ x: index % 2 === 0 ? -50 : 50, opacity: 0 }}
-                whileInView={{ x: 0, opacity: 1 }}
-                viewport={{ once: true }}
                 className='bg-white p-8 rounded-2xl shadow-lg border border-slate-100 flex flex-col md:flex-row items-center gap-8'
               >
                 <div
@@ -92,7 +89,7 @@ export default function ThemesPage() {
                     {theme.details}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
