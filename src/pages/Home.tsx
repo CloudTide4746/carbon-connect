@@ -1,12 +1,15 @@
-import Hero from '../components/Hero';
-import ImpactStats from '../components/ImpactStats';
-import HowItWorks from '../components/HowItWorks';
-import SuccessStories from '../components/SuccessStories';
-import CarbonCalculator from '../components/CarbonCalculator';
-import Partners from '../components/Partners';
-import TeamShowcase from '../components/TeamShowcase';
-import CallToAction from '../components/CallToAction';
-import { motion } from 'framer-motion';
+/** @format */
+
+import Hero from "../components/Hero";
+import ImpactStats from "../components/ImpactStats";
+import LiveMonitoring from "../components/LiveMonitoring";
+import HowItWorks from "../components/HowItWorks";
+import SuccessStories from "../components/SuccessStories";
+import CarbonCalculator from "../components/CarbonCalculator";
+import Partners from "../components/Partners";
+import TeamShowcase from "../components/TeamShowcase";
+import CallToAction from "../components/CallToAction";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
@@ -18,6 +21,7 @@ export default function Home() {
     >
       <Hero />
       <ImpactStats />
+      <LiveMonitoring />
       <HowItWorks />
       <TeamShowcase />
       <SuccessStories />
