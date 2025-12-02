@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { IMAGES } from '../constants/images';
 
 export default function CallToAction() {
   const navigate = useNavigate();
@@ -7,7 +8,10 @@ export default function CallToAction() {
   return (
     <section className="py-20 bg-eco-green-900 relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{ backgroundImage: `url('${IMAGES.PATTERNS.CUBES}')` }}
+      ></div>
       
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Activity, ShieldCheck, PlayCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { IMAGES } from "../constants/images";
 
 export default function Hero() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Hero() {
       {/* Background Image */}
       <div className='absolute inset-0 z-0'>
         <img
-          src='https://picsum.photos/seed/forest_hero/1920/1080'
+          src={IMAGES.HERO.BG}
           alt='Forest Background'
           className='w-full h-full object-cover opacity-40'
         />
@@ -94,7 +95,7 @@ export default function Hero() {
               <div className='absolute -inset-1 bg-gradient-to-r from-eco-green-500 to-blue-500 rounded-2xl blur opacity-30 animate-pulse'></div>
               <div className='relative bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl'>
                 <img
-                  src='https://picsum.photos/seed/satellite_view/800/600'
+                  src={IMAGES.HERO.DASHBOARD}
                   alt='Dashboard Preview'
                   className='w-full h-auto opacity-80 hover:scale-105 transition-transform duration-700'
                 />

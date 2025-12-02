@@ -2,38 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Quote, ArrowRight } from "lucide-react";
-
-const stories = [
-  {
-    id: 1,
-    location: "浙江安吉",
-    title: "竹林变金山，村民增收新途径",
-    quote:
-      "自从加入了碳汇项目，我们村的万亩竹林不仅卖出了竹子，连空气都变成了钱。",
-    author: "李村长",
-    image: "https://picsum.photos/seed/story1/800/600",
-    impact: "增收 230 万元/年",
-  },
-  {
-    id: 2,
-    location: "内蒙古塞罕坝",
-    title: "荒漠化治理与碳中和的双赢",
-    quote:
-      "通过科学的林业管理，我们将沙地变成了绿洲，现在这些树木正在为全球降温。",
-    author: "张林场主",
-    image: "https://picsum.photos/seed/story2/800/600",
-    impact: "固碳 50 万吨/年",
-  },
-  {
-    id: 3,
-    location: "云南普洱",
-    title: "生物多样性保护的经济价值",
-    quote: "碳汇交易让我们有资金去保护这里的珍稀动植物，生态环境越来越好了。",
-    author: "王巡护员",
-    image: "https://picsum.photos/seed/story3/800/600",
-    impact: "保护面积 3 万公顷",
-  },
-];
+import { stories } from "../data/story_success";
+import { IMAGES } from "../constants/images";
 
 export default function SuccessStories() {
   return (
@@ -56,7 +26,7 @@ export default function SuccessStories() {
             >
               <div className='absolute inset-0'>
                 <img
-                  src={story.image}
+                  src={IMAGES.STORIES[index]}
                   alt={story.title}
                   className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
                 />

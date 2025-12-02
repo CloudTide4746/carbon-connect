@@ -1,6 +1,15 @@
 /** @format */
 
-import { Bot, MessageSquare, Mic, Send, Loader2, FileText, Calculator, TreePine } from "lucide-react";
+import {
+  Bot,
+  MessageSquare,
+  Mic,
+  Send,
+  Loader2,
+  FileText,
+  Calculator,
+  TreePine,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -8,6 +17,7 @@ import {
   type ChatMessage,
 } from "../services/deepseekService";
 import { toast } from "sonner";
+import { IMAGES } from "../constants/images";
 
 export default function DigitalHumanPage() {
   const [messages, setMessages] = useState<
@@ -33,7 +43,7 @@ export default function DigitalHumanPage() {
   const handleSend = async (textOverride?: string, systemPrompt?: string) => {
     if (isLoading) return;
     const textToSend = textOverride || input;
-    
+
     if (!textToSend.trim()) {
       toast.warning("请输入内容后再发送");
       return;
@@ -41,7 +51,7 @@ export default function DigitalHumanPage() {
 
     const userMessage = textToSend.trim();
     if (!textOverride) setInput(""); // Only clear input if typed manually
-    
+
     setMessages((prev) => [...prev, { type: "user", text: userMessage }]);
     setIsLoading(true);
 
@@ -67,7 +77,12 @@ export default function DigitalHumanPage() {
       toast.error("请求失败，请稍后再试");
       setMessages((prev) => [
         ...prev,
-        { type: "bot", text: "抱歉，我遇到了一些问题，请稍后再试。" },
+        {
+          type: "bot",
+          text: `请求失败，请稍后再试${
+            error instanceof Error ? error.message : ""
+          }`,
+        },
       ]);
     } finally {
       setIsLoading(false);
@@ -79,23 +94,26 @@ export default function DigitalHumanPage() {
       icon: FileText,
       label: "政策解读",
       color: "bg-blue-500",
-      prompt: "请为我解读最新的林业碳汇相关政策，重点关注CCER重启后的变化和机会。",
-      desc: "深度解析最新碳汇政策红利"
+      prompt:
+        "请为我解读最新的林业碳汇相关政策，重点关注CCER重启后的变化和机会。",
+      desc: "深度解析最新碳汇政策红利",
     },
     {
       icon: Calculator,
       label: "碳汇估算",
       color: "bg-green-500",
-      prompt: "我有一片林地，请帮我粗略估算一下每亩林地大概能产生多少碳汇收益？请列出计算依据。",
-      desc: "快速评估林地潜在价值"
+      prompt:
+        "我有一片林地，请帮我粗略估算一下每亩林地大概能产生多少碳汇收益？请列出计算依据。",
+      desc: "快速评估林地潜在价值",
     },
     {
       icon: TreePine,
       label: "项目策划",
       color: "bg-orange-500",
-      prompt: "我想开发一个林业碳汇项目，请为我生成一份简要的项目开发策划书大纲，包含关键步骤和风险提示。",
-      desc: "生成专业的项目开发方案"
-    }
+      prompt:
+        "我想开发一个林业碳汇项目，请为我生成一份简要的项目开发策划书大纲，包含关键步骤和风险提示。",
+      desc: "生成专业的项目开发方案",
+    },
   ];
 
   return (
@@ -108,14 +126,19 @@ export default function DigitalHumanPage() {
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20'>
         <div className='grid lg:grid-cols-3 gap-8 items-start'>
           {/* Left Column: Avatar & Tools */}
-          <div className="lg:col-span-1 space-y-8">
+          <div className='lg:col-span-1 space-y-8'>
             {/* Avatar */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className='relative aspect-square rounded-full bg-gradient-to-b from-eco-green-500/20 to-transparent flex items-center justify-center overflow-hidden border border-white/10 shadow-2xl shadow-eco-green-900/50'
             >
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse"></div>
+              <div
+                className='absolute inset-0 opacity-30 animate-pulse'
+                style={{
+                  backgroundImage: `url('${IMAGES.PATTERNS.STARDUST}')`,
+                }}
+              ></div>
               <div className='text-[150px]'>👩‍🌾</div>
               <div className='absolute bottom-10 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur px-4 py-2 rounded-full border border-white/20 flex items-center gap-2'>
                 <div className='w-2 h-2 bg-green-400 rounded-full animate-ping'></div>
@@ -124,25 +147,29 @@ export default function DigitalHumanPage() {
             </motion.div>
 
             {/* AI Tools Grid */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 backdrop-blur-sm">
-              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Bot className="w-5 h-5 text-eco-green-400" />
+            <div className='bg-slate-800/50 border border-slate-700 rounded-2xl p-6 backdrop-blur-sm'>
+              <h3 className='text-lg font-bold mb-4 flex items-center gap-2'>
+                <Bot className='w-5 h-5 text-eco-green-400' />
                 智能工具箱
               </h3>
-              <div className="space-y-3">
+              <div className='space-y-3'>
                 {aiTools.map((tool, index) => (
                   <button
                     key={index}
                     onClick={() => handleSend(tool.prompt)}
                     disabled={isLoading}
-                    className="w-full flex items-center gap-4 p-3 rounded-xl bg-slate-700/50 hover:bg-slate-700 border border-transparent hover:border-slate-600 transition-all group text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                    className='w-full flex items-center gap-4 p-3 rounded-xl bg-slate-700/50 hover:bg-slate-700 border border-transparent hover:border-slate-600 transition-all group text-left disabled:opacity-50 disabled:cursor-not-allowed'
                   >
-                    <div className={`p-2 rounded-lg ${tool.color} text-white group-hover:scale-110 transition-transform`}>
-                      <tool.icon className="w-5 h-5" />
+                    <div
+                      className={`p-2 rounded-lg ${tool.color} text-white group-hover:scale-110 transition-transform`}
+                    >
+                      <tool.icon className='w-5 h-5' />
                     </div>
                     <div>
-                      <div className="font-medium text-slate-200">{tool.label}</div>
-                      <div className="text-xs text-slate-400">{tool.desc}</div>
+                      <div className='font-medium text-slate-200'>
+                        {tool.label}
+                      </div>
+                      <div className='text-xs text-slate-400'>{tool.desc}</div>
                     </div>
                   </button>
                 ))}
@@ -151,7 +178,7 @@ export default function DigitalHumanPage() {
           </div>
 
           {/* Right Column: Chat Interface */}
-          <div className="lg:col-span-2">
+          <div className='lg:col-span-2'>
             <div className='mb-6'>
               <h1 className='text-4xl font-bold mb-2'>
                 数字人 <span className='text-eco-green-400'>林小汇</span>
@@ -166,7 +193,7 @@ export default function DigitalHumanPage() {
                 <MessageSquare className='w-5 h-5 text-eco-green-400' />
                 <span className='font-semibold'>智能对话窗口</span>
               </div>
-              
+
               <div className='flex-grow p-4 overflow-y-auto space-y-4 custom-scrollbar scroll-smooth'>
                 {messages.map((msg, idx) => (
                   <div

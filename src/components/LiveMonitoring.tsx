@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   Wifi,
 } from "lucide-react";
+import { IMAGES } from "../constants/images";
 
 const locations = [
   { id: 1, x: 20, y: 30, label: "A-01区" },
@@ -113,7 +114,7 @@ export default function LiveMonitoring() {
           <div className='lg:col-span-2 relative bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl h-[500px] group'>
             {/* 地图底图 */}
             <img
-              src='https://picsum.photos/seed/satellite/1200/800'
+              src={IMAGES.MONITORING.SATELLITE_MAP}
               alt='Satellite Map'
               className='w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700'
             />

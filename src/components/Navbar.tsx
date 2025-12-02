@@ -49,8 +49,8 @@ export default function Navbar() {
       transition={{ duration: 0.5 }}
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm py-2"
-          : "bg-transparent border-b border-transparent py-4"
+          ? "bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm py-3"
+          : "bg-transparent border-b border-transparent py-3"
       }`}
     >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>

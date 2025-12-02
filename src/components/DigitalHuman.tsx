@@ -1,10 +1,15 @@
 
 
+import { IMAGES } from "../constants/images";
+
 export default function DigitalHuman() {
   return (
     <section id="digital-human" className="py-20 bg-slate-900 text-white overflow-hidden relative">
       {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{ backgroundImage: `url('${IMAGES.PATTERNS.CUBES}')` }}
+      ></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="lg:flex items-center">

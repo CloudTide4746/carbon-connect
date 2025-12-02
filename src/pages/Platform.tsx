@@ -6,56 +6,24 @@ import MarketStats from "../components/platform/MarketStats";
 import FilterBar from "../components/platform/FilterBar";
 import ProjectCard from "../components/platform/ProjectCard";
 import ProjectModal from "../components/platform/ProjectModal";
+import { projects } from "../data/story_success";
 
-const projects = [
-  {
-    id: 1,
-    name: "云南普洱森林碳汇项目",
-    location: "云南省普洱市",
-    type: "造林碳汇",
-    volume: "50,000 吨",
-    price: 72.0,
-    image: "https://picsum.photos/seed/carbon1/800/600",
-    tags: ["VCS认证", "生物多样性保护"],
-  },
-  {
-    id: 2,
-    name: "大兴安岭林业固碳示范区",
-    location: "黑龙江省大兴安岭",
-    type: "森林经营",
-    volume: "120,000 吨",
-    price: 65.5,
-    image: "https://picsum.photos/seed/carbon2/800/600",
-    tags: ["CCER申请中", "国有林场"],
-  },
-  {
-    id: 3,
-    name: "福建三明竹林碳汇项目",
-    location: "福建省三明市",
-    type: "竹林碳汇",
-    volume: "30,000 吨",
-    price: 78.2,
-    image: "https://picsum.photos/seed/carbon3/800/600",
-    tags: ["精准扶贫", "高固碳率"],
-  },
-  {
-    id: 4,
-    name: "贵州黔东南生态修复项目",
-    location: "贵州省黔东南州",
-    type: "植被恢复",
-    volume: "45,000 吨",
-    price: 69.8,
-    image: "https://picsum.photos/seed/carbon4/800/600",
-    tags: ["乡村振兴", "水土保持"],
-  },
-];
+interface Project {
+  id: number;
+  name: string;
+  location: string;
+  type: string;
+  volume: string;
+  price: number;
+  tags: string[];
+}
 
 export default function Platform() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const openModal = (project: any) => {
+  const openModal = (project: Project) => {
     setSelectedProject(project);
     setIsModalOpen(true);
   };

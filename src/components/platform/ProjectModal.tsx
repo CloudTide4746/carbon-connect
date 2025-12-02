@@ -10,6 +10,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { toast } from "sonner";
+import { IMAGES } from "../../constants/images";
 
 interface Project {
   id: number;
@@ -18,7 +19,7 @@ interface Project {
   type: string;
   volume: string;
   price: number;
-  image: string;
+
   tags: string[];
 }
 
@@ -61,7 +62,7 @@ export default function ProjectModal({
           >
             <div className='relative h-64'>
               <img
-                src={selectedProject.image}
+                src={IMAGES.PROJECTS[selectedProject.id - 1]}
                 alt={selectedProject.name}
                 className='w-full h-full object-cover'
               />

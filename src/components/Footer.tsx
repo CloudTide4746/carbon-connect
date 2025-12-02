@@ -14,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import type { FormEvent } from "react";
+import { IMAGES } from "../constants/images";
 
 export default function Footer() {
   const handleSubscribe = (e: FormEvent) => {
@@ -28,7 +29,10 @@ export default function Footer() {
         <div className='absolute top-0 left-1/4 w-96 h-96 bg-eco-green-900/20 rounded-full blur-[120px]'></div>
         <div className='absolute bottom-0 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[120px]'></div>
         {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03]"></div>
+        <div
+          className='absolute inset-0 opacity-[0.03]'
+          style={{ backgroundImage: `url('${IMAGES.PATTERNS.CUBES}')` }}
+        ></div>
       </div>
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>

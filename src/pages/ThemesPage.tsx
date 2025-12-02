@@ -1,53 +1,9 @@
 /** @format */
 
-import {
-  Sprout,
-  Zap,
-  Heart,
-  Palette,
-  Landmark,
-  ArrowRight,
-} from "lucide-react";
 import { motion } from "framer-motion";
+import { IMAGES } from "../constants/images";
+import { themes } from "../data/story_success";
 
-const themes = [
-  {
-    title: "乡村振兴与农业农村现代化",
-    icon: Sprout,
-    color: "bg-green-100 text-green-600",
-    desc: "推动农业产业升级，增加农民收入，实现农村现代化。",
-    details:
-      "通过引入碳汇交易机制，将“叶子”变“票子”，直接增加村集体和农户收入。",
-  },
-  {
-    title: "科技创新和未来产业",
-    icon: Zap,
-    color: "bg-blue-100 text-blue-600",
-    desc: "AI遥感、大数据与区块链技术赋能传统林业。",
-    details: "构建空天地一体化监测网络，推动传统林业向数字林业转型升级。",
-  },
-  {
-    title: "生态文明建设和绿色低碳发展",
-    icon: Heart,
-    color: "bg-emerald-100 text-emerald-600",
-    desc: "践行“绿水青山就是金山银山”理念，促进碳中和。",
-    details: "建立生态产品价值实现机制，让保护生态的人不吃亏、能受益。",
-  },
-  {
-    title: "文化创意和区域交流合作",
-    icon: Palette,
-    color: "bg-purple-100 text-purple-600",
-    desc: "挖掘乡村生态文化价值，促进城乡要素双向流动。",
-    details: "结合生态旅游与研学教育，传播绿色低碳生活方式。",
-  },
-  {
-    title: "社会治理和公共服务",
-    icon: Landmark,
-    color: "bg-orange-100 text-orange-600",
-    desc: "提升乡村数字化治理水平，完善公共服务体系。",
-    details: "利用数字技术提升乡村治理效能，构建共建共治共享的社会治理格局。",
-  },
-];
 
 export default function ThemesPage() {
   return (
@@ -58,7 +14,10 @@ export default function ThemesPage() {
       className='pt-20 min-h-screen bg-slate-50'
     >
       <section className='py-20 bg-eco-green-900 text-white relative overflow-hidden'>
-        <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
+        <div
+          className='absolute inset-0 opacity-20'
+          style={{ backgroundImage: `url('${IMAGES.PATTERNS.DIAGMONDS}')` }}
+        ></div>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10'>
           <h1 className='text-4xl md:text-5xl font-bold mb-6'>五大战略领域</h1>
           <p className='text-xl text-eco-green-100 max-w-3xl mx-auto'>

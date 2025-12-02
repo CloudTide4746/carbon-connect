@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Cloud, Wind, Code2, Sparkles } from "lucide-react";
+import { IMAGES } from "../constants/images";
 
 export default function TeamShowcase() {
   return (
@@ -10,7 +11,7 @@ export default function TeamShowcase() {
       <div className='absolute inset-0 z-0'>
         <div className='absolute inset-0 bg-linear-to-r from-blue-900/40 to-purple-900/40 mix-blend-overlay'></div>
         <img
-          src='https://picsum.photos/seed/sky/2070/1000'
+          src={IMAGES.TEAM.SKY_BG}
           alt='Night Sky Clouds'
           className='w-full h-full object-cover opacity-30'
         />

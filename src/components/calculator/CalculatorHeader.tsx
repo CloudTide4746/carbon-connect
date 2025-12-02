@@ -1,9 +1,13 @@
 import { Calculator } from 'lucide-react';
+import { IMAGES } from '../../constants/images';
 
 export default function CalculatorHeader() {
   return (
     <div className="lg:w-1/2 p-10 lg:p-16 bg-gradient-to-br from-eco-green-900 to-slate-900 text-white relative">
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+      <div 
+        className="absolute inset-0 opacity-20"
+        style={{ backgroundImage: `url('${IMAGES.PATTERNS.CARBON_FIBRE}')` }}
+      ></div>
       <div className="relative z-10">
         <div className="bg-white/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-8 backdrop-blur-sm">
           <Calculator className="h-8 w-8 text-eco-green-400" />

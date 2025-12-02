@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, ArrowUpRight } from "lucide-react";
+import { IMAGES } from "../../constants/images";
 
 interface Project {
   id: number;
@@ -10,7 +11,6 @@ interface Project {
   type: string;
   volume: string;
   price: number;
-  image: string;
   tags: string[];
 }
 
@@ -36,7 +36,7 @@ export default function ProjectCard({
     >
       <div className='relative h-48 overflow-hidden'>
         <img
-          src={project.image}
+          src={IMAGES.PROJECTS[index]}
           alt={project.name}
           className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
         />
