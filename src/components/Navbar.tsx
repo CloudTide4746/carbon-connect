@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Leaf } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,10 @@ export default function Navbar() {
     if (location.pathname !== path) {
       navigate(path);
     }
+  };
+
+  const handleJoin = () => {
+    toast.info('入驻申请功能正在开发中，请稍后访问。');
   };
 
   const navItems = [
@@ -53,7 +58,10 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex">
-            <button className="bg-eco-green-600 text-white px-4 py-2 rounded-lg hover:bg-eco-green-700 transition-colors">
+            <button 
+              onClick={handleJoin}
+              className="bg-eco-green-600 text-white px-4 py-2 rounded-lg hover:bg-eco-green-700 transition-colors"
+            >
               立即入驻
             </button>
           </div>
