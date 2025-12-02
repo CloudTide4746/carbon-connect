@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 
 export default function Footer() {
   const handleSubscribe = (e: FormEvent) => {

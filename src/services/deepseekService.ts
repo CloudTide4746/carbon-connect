@@ -20,13 +20,6 @@ export interface ChatMessage {
 export const chatWithDeepSeek = async (
   messages: ChatMessage[]
 ): Promise<string> => {
-  if (API_KEY === "YOUR_DEEPSEEK_API_KEY_HERE") {
-    console.warn("DeepSeek API Key is missing. Using mock response.");
-    // 模拟延迟以展示加载状态
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return "请在 src/services/deepseekService.ts 文件中配置您的 DeepSeek API Key 以启用真实对话功能。";
-  }
-
   try {
     const response = await fetch(API_URL, {
       method: "POST",
