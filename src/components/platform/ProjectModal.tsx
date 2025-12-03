@@ -8,9 +8,12 @@ import {
   DollarSign,
   Activity,
   CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { IMAGES } from "../../constants/images";
+import { useState } from "react";
+import { purchaseCarbonCredit } from "../../services/transactionService";
 
 interface Project {
   id: number;
@@ -34,9 +37,43 @@ export default function ProjectModal({
   setIsModalOpen,
   selectedProject,
 }: ProjectModalProps) {
-  const handleBuy = () => {
-    toast.success("订单创建成功！请前往支付。");
-    setIsModalOpen(false);
+  const [isBuying, setIsBuying] = useState(false);
+
+  const handleBuy = async () => {
+    if (!selectedProject) return;
+
+    setIsBuying(true);
+    const loadingToast = toast.loading(
+      "正在生成电子交易凭证... 连接银联支付网关...",
+      {
+        duration: Infinity,
+      }
+    );
+
+    try {
+      // 模拟购买 100 吨
+      const result = await purchaseCarbonCredit(
+        selectedProject.id,
+        selectedProject.name,
+        100,
+        selectedProject.price
+      );
+
+      toast.dismiss(loadingToast);
+      toast.success("交易成功！", {
+        description: `已成功购买 100 吨碳汇，电子证书编号：${result.txHash
+          .substr(0, 16)
+          .toUpperCase()}`,
+        duration: 5000,
+      });
+
+      setIsModalOpen(false);
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error("交易失败，请稍后重试");
+    } finally {
+      setIsBuying(false);
+    }
   };
 
   const handleContact = () => {
@@ -51,7 +88,7 @@ export default function ProjectModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => !isBuying && setIsModalOpen(false)}
             className='absolute inset-0 bg-black/60 backdrop-blur-sm'
           />
           <motion.div
@@ -60,14 +97,29 @@ export default function ProjectModal({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className='bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative z-10 shadow-2xl'
           >
+            {/* Loading Overlay */}
+            {isBuying && (
+              <div className='absolute inset-0 z-50 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center'>
+                <Loader2 className='w-12 h-12 text-eco-green-600 animate-spin mb-4' />
+                <h3 className='text-xl font-bold text-slate-800'>
+                  正在生成合规证书...
+                </h3>
+                <p className='text-slate-500 mt-2 font-mono text-sm'>
+                  Generating Digital Certificate...
+                </p>
+              </div>
+            )}
+
             <div className='relative h-64'>
               <img
-                src={IMAGES.PROJECTS[selectedProject.id - 1]}
+                src={
+                  IMAGES.PROJECTS[selectedProject.id - 1] || IMAGES.PROJECTS[0]
+                }
                 alt={selectedProject.name}
                 className='w-full h-full object-cover'
               />
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={() => !isBuying && setIsModalOpen(false)}
                 className='absolute top-4 right-4 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors'
               >
                 <ArrowDownRight className='h-6 w-6 transform rotate-45' />
@@ -150,13 +202,15 @@ export default function ProjectModal({
               <div className='flex gap-4'>
                 <button
                   onClick={handleBuy}
-                  className='flex-1 bg-eco-green-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-eco-green-700 transition-all shadow-lg shadow-eco-green-200'
+                  disabled={isBuying}
+                  className='flex-1 bg-eco-green-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-eco-green-700 transition-all shadow-lg shadow-eco-green-200 disabled:opacity-50 disabled:cursor-not-allowed'
                 >
-                  立即购买
+                  {isBuying ? "处理中..." : "立即购买"}
                 </button>
                 <button
                   onClick={handleContact}
-                  className='flex-1 bg-white text-slate-700 border border-slate-200 py-3 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all'
+                  disabled={isBuying}
+                  className='flex-1 bg-white text-slate-700 border border-slate-200 py-3 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all disabled:opacity-50'
                 >
                   联系卖家
                 </button>

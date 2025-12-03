@@ -8,18 +8,83 @@ import {
   TreePine,
   FileText,
   CheckCircle,
+  Loader2,
 } from "lucide-react";
 import useGlobalStore from "../../globalState";
 import { toast } from "sonner";
+import { useState } from "react";
+import { submitDeclaration } from "../../services/declarationService";
 
 export default function ProjectRuzhu() {
   const isRuzhuOpen = useGlobalStore((state) => state.isRuzhuOpen);
   const setIsRuzhuOpen = useGlobalStore((state) => state.setIsRuzhuOpen);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    location: "",
+    area: "",
+    treeType: "造林碳汇",
+    contact: "",
+    phone: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("申请提交成功！我们会尽快审核您的项目。");
-    setIsRuzhuOpen(false);
+    if (
+      !formData.name ||
+      !formData.location ||
+      !formData.area ||
+      !formData.contact ||
+      !formData.phone
+    ) {
+      toast.error("请填写所有必填项");
+      return;
+    }
+
+    setIsLoading(true);
+    const loadingToast = toast.loading("正在上传至云端... AI 核验中...", {
+      duration: Infinity,
+    });
+
+    try {
+      // 调用模拟后端 API
+      const result = await submitDeclaration({
+        name: formData.contact,
+        location: formData.location,
+        area: Number(formData.area),
+        treeType: formData.treeType,
+        contact: formData.phone,
+      });
+
+      toast.dismiss(loadingToast);
+      toast.success(`核验成功！预估年碳汇量：${result.carbonVolume} 吨`, {
+        description: "项目已存入云端数据库，等待最终审核。",
+        duration: 5000,
+      });
+
+      // 重置表单并关闭
+      setFormData({
+        name: "",
+        location: "",
+        area: "",
+        treeType: "造林碳汇",
+        contact: "",
+        phone: "",
+      });
+      setIsRuzhuOpen(false);
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      toast.error("提交失败，请检查网络连接");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -31,7 +96,7 @@ export default function ProjectRuzhu() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsRuzhuOpen(false)}
+            onClick={() => !isLoading && setIsRuzhuOpen(false)}
             className='absolute inset-0 bg-slate-900/70 backdrop-blur-sm'
           />
 
@@ -42,12 +107,26 @@ export default function ProjectRuzhu() {
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className='relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]'
           >
+            {/* Loading Overlay */}
+            {isLoading && (
+              <div className='absolute inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center'>
+                <Loader2 className='w-12 h-12 text-eco-green-600 animate-spin mb-4' />
+                <h3 className='text-xl font-bold text-slate-800'>
+                  AI 智能核验中...
+                </h3>
+                <p className='text-slate-500 mt-2'>
+                  正在分析卫星遥感数据与上传凭证
+                </p>
+              </div>
+            )}
+
             {/* Header with Gradient */}
             <div className='relative bg-gradient-to-r from-eco-green-600 to-teal-600 p-8 text-white shrink-0'>
               <div className='absolute top-4 right-4'>
                 <button
-                  onClick={() => setIsRuzhuOpen(false)}
-                  className='p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-white/80 hover:text-white'
+                  onClick={() => !isLoading && setIsRuzhuOpen(false)}
+                  disabled={isLoading}
+                  className='p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-white/80 hover:text-white disabled:opacity-50'
                 >
                   <X className='w-5 h-5' />
                 </button>
@@ -71,7 +150,7 @@ export default function ProjectRuzhu() {
 
             {/* Scrollable Form Area */}
             <div className='flex-1 overflow-y-auto custom-scrollbar p-8 bg-slate-50'>
-              <form onSubmit={handleSubmit} className='space-y-8'>
+              <form className='space-y-8'>
                 {/* Section 1: Basic Info */}
                 <section>
                   <h3 className='text-lg font-bold text-slate-800 mb-4 flex items-center gap-2'>
@@ -84,6 +163,9 @@ export default function ProjectRuzhu() {
                         项目名称
                       </label>
                       <input
+                        name='name'
+                        value={formData.name}
+                        onChange={handleInputChange}
                         type='text'
                         required
                         placeholder='例如：云南普洱林业碳汇项目'
@@ -95,6 +177,9 @@ export default function ProjectRuzhu() {
                         地理位置
                       </label>
                       <input
+                        name='location'
+                        value={formData.location}
+                        onChange={handleInputChange}
                         type='text'
                         required
                         placeholder='省/市/区县'
@@ -105,7 +190,12 @@ export default function ProjectRuzhu() {
                       <label className='text-sm font-medium text-slate-600'>
                         林地类型
                       </label>
-                      <select className='w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-eco-green-500/20 focus:border-eco-green-500 transition-all outline-none text-slate-600'>
+                      <select
+                        name='treeType'
+                        value={formData.treeType}
+                        onChange={handleInputChange}
+                        className='w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-eco-green-500/20 focus:border-eco-green-500 transition-all outline-none text-slate-600'
+                      >
                         <option>造林碳汇</option>
                         <option>森林经营</option>
                         <option>竹林碳汇</option>
@@ -117,6 +207,9 @@ export default function ProjectRuzhu() {
                         预估面积 (公顷)
                       </label>
                       <input
+                        name='area'
+                        value={formData.area}
+                        onChange={handleInputChange}
                         type='number'
                         required
                         placeholder='0.00'
@@ -157,6 +250,9 @@ export default function ProjectRuzhu() {
                         联系人姓名
                       </label>
                       <input
+                        name='contact'
+                        value={formData.contact}
+                        onChange={handleInputChange}
                         type='text'
                         required
                         className='w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-eco-green-500/20 focus:border-eco-green-500 transition-all outline-none'
@@ -167,6 +263,9 @@ export default function ProjectRuzhu() {
                         联系电话
                       </label>
                       <input
+                        name='phone'
+                        value={formData.phone}
+                        onChange={handleInputChange}
                         type='tel'
                         required
                         className='w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-eco-green-500/20 focus:border-eco-green-500 transition-all outline-none'
@@ -182,15 +281,17 @@ export default function ProjectRuzhu() {
               <button
                 type='button'
                 onClick={() => setIsRuzhuOpen(false)}
-                className='px-6 py-3 rounded-xl text-slate-600 font-medium hover:bg-slate-50 transition-colors'
+                disabled={isLoading}
+                className='px-6 py-3 rounded-xl text-slate-600 font-medium hover:bg-slate-50 transition-colors disabled:opacity-50'
               >
                 取消
               </button>
               <button
                 onClick={handleSubmit}
-                className='px-8 py-3 rounded-xl bg-eco-green-600 text-white font-bold hover:bg-eco-green-700 shadow-lg shadow-eco-green-200 hover:shadow-xl hover:shadow-eco-green-300 transition-all transform hover:-translate-y-0.5'
+                disabled={isLoading}
+                className='px-8 py-3 rounded-xl bg-eco-green-600 text-white font-bold hover:bg-eco-green-700 shadow-lg shadow-eco-green-200 hover:shadow-xl hover:shadow-eco-green-300 transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed'
               >
-                提交申请
+                {isLoading ? "处理中..." : "提交申请"}
               </button>
             </div>
           </motion.div>
