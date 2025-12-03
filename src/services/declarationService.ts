@@ -24,7 +24,10 @@ export const getDeclarations = (): DeclarationData[] => {
 
 // 模拟提交申报 API
 export const submitDeclaration = async (
-  formData: Omit<DeclarationData, "id" | "status" | "timestamp" | "carbonVolume">
+  formData: Omit<
+    DeclarationData,
+    "id" | "status" | "timestamp" | "carbonVolume"
+  >
 ): Promise<DeclarationData> => {
   // 1. 模拟 AI 核验过程
   // 假设 AI 根据面积估算碳汇量 (模拟算法: 面积 * 0.8 + 随机波动)
