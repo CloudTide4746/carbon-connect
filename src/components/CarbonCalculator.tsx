@@ -7,6 +7,7 @@ import LandTypeSelector from "./calculator/LandTypeSelector";
 import FactorSelectors from "./calculator/FactorSelectors";
 import AreaInput from "./calculator/AreaInput";
 import ResultDisplay from "./calculator/ResultDisplay";
+import { number } from "framer-motion";
 
 export default function CarbonCalculator() {
   const [area, setArea] = useState<number | "">("");
@@ -23,6 +24,22 @@ export default function CarbonCalculator() {
   } | null>(null);
 
   const calculate = () => {
+    if (type === "forest" && !area) {
+      toast.error("请输入有效的林地面积");
+      return;
+    }
+    if (type === "bamboo" && !area) {
+      toast.error("请输入有效的竹林面积");
+      return;
+    }
+    if (type === "grass" && !area) {
+      toast.error("请输入有效的草地面积");
+      return;
+    }
+    if (typeof area === "number" && area < 0) {
+      toast.error("面积不能为负数");
+      return;
+    }
     if (!area) {
       toast.error("请输入有效的林地面积");
       return;

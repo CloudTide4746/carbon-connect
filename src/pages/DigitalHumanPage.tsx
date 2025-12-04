@@ -9,6 +9,7 @@ import {
   FileText,
   Calculator,
   TreePine,
+  Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
@@ -16,15 +17,13 @@ import {
   chatWithDeepSeek,
   type ChatMessage,
 } from "../services/deepseekService";
+import useGlobalStore from "../globalState";
 import { toast } from "sonner";
 import { IMAGES } from "../constants/images";
 
 export default function DigitalHumanPage() {
-  const [messages, setMessages] = useState<
-    { type: "bot" | "user"; text: string }[]
-  >([
-    { type: "bot", text: "你好！我是您的碳汇助手林小汇。请问有什么可以帮您？" },
-  ]);
+  const { chatMessages: messages, setChatMessages: setMessages } =
+    useGlobalStore();
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -114,6 +113,15 @@ export default function DigitalHumanPage() {
         "我想开发一个林业碳汇项目，请为我生成一份简要的项目开发策划书大纲，包含关键步骤和风险提示。",
       desc: "生成专业的项目开发方案",
     },
+  ];
+
+  const quickPrompts = [
+    "林业碳汇项目从立项到完成碳汇计量的全流程需要多少个工作日？每个环节的关键节点是什么？",
+    "当前主流的林业碳汇方法学（如VCS、CCER）在项目基准线设定、额外性论证上的核心差异是什么？",
+    "一片100公顷的人工造林碳汇项目，在运营期内（20年）的年均碳汇量大约是多少吨CO₂e？受哪些因素影响？",
+    "林业碳汇项目开发过程中，权属证明（如林权证）的信息缺失或不清晰，会导致哪些审核风险？如何补救？",
+    "林业碳汇项目的监测频率要求是什么？现场核查时需要准备哪些原始数据（如林木生长量、土壤碳库数据）？",
+    "林业碳汇项目参与CCER交易的流程是什么？交易价格受哪些市场因素影响？",
   ];
 
   return (
@@ -225,6 +233,22 @@ export default function DigitalHumanPage() {
               </div>
 
               <div className='p-4 bg-slate-900/50 border-t border-slate-700'>
+                {/* Quick Prompts */}
+                <div className='flex gap-2 overflow-x-auto pb-3 mb-2 custom-scrollbar'>
+                  {quickPrompts.map((prompt, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setInput(prompt)}
+                      className='whitespace-nowrap px-3 py-1.5 rounded-full bg-slate-800 border border-slate-600 hover:bg-slate-700 hover:border-eco-green-500/50 hover:text-eco-green-400 transition-all text-xs text-slate-300 flex items-center gap-1.5 shrink-0'
+                    >
+                      <Sparkles className='w-3 h-3' />
+                      {prompt.length > 15
+                        ? prompt.slice(0, 15) + "..."
+                        : prompt}
+                    </button>
+                  ))}
+                </div>
+
                 <div className='flex gap-2'>
                   <input
                     type='text'
