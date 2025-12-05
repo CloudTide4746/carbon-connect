@@ -277,7 +277,7 @@ export default function CarbonCalculator() {
               </div>
 
               <div className='pt-4 border-t border-slate-50'>
-                <button
+                {/* <button
                   onClick={() =>
                     setIncludeUnderstory(!includeUnderstory) ||
                     setIncludeSoil(!includeSoil) ||
@@ -287,7 +287,7 @@ export default function CarbonCalculator() {
                 >
                   <Info className='w-4 h-4' />
                   高级选项：碳库范围选择 (默认包含土壤、枯落物、林下植被)
-                </button>
+                </button> */}
                 <div className='flex flex-wrap gap-4'>
                   <label className='flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors'>
                     <input
