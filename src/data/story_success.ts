@@ -41,6 +41,8 @@ export const projects = [
     volume: "50,000 吨",
     price: 72.0,
     tags: ["VCS认证", "生物多样性保护"],
+    farmerExpectation:
+      "希望能用这笔碳汇收益修缮村里的老旧灌溉渠道，让旱季的庄稼也能喝上水，剩下的钱给村小学的孩子们添置些新课桌。",
   },
   {
     id: 2,
@@ -49,8 +51,9 @@ export const projects = [
     type: "森林经营",
     volume: "120,000 吨",
     price: 65.5,
-
     tags: ["CCER申请中", "国有林场"],
+    farmerExpectation:
+      "期盼能引入更先进的防火监控设备，保护好这片祖祖辈辈守护的林子，同时也想改善一下护林员们的工作生活条件。",
   },
   {
     id: 3,
@@ -59,8 +62,9 @@ export const projects = [
     type: "竹林碳汇",
     volume: "30,000 吨",
     price: 78.2,
-
     tags: ["精准扶贫", "高固碳率"],
+    farmerExpectation:
+      "竹子长得快，希望碳汇能卖个好价钱，村里计划用这笔钱把通往山里的路硬化一下，方便竹笋运下山。",
   },
   {
     id: 4,
@@ -69,8 +73,9 @@ export const projects = [
     type: "植被恢复",
     volume: "45,000 吨",
     price: 69.8,
-
     tags: ["乡村振兴", "水土保持"],
+    farmerExpectation:
+      "大家伙儿都盼着生态好了日子也能好，想用收益在村里建个老年活动中心，让村里的老人们有个聊天解闷的好去处。",
   },
 ];
 

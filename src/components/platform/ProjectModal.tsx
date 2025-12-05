@@ -9,6 +9,7 @@ import {
   Activity,
   CheckCircle2,
   Loader2,
+  Quote,
 } from "lucide-react";
 import { toast } from "sonner";
 import { IMAGES } from "../../constants/images";
@@ -22,8 +23,8 @@ interface Project {
   type: string;
   volume: string;
   price: number;
-
   tags: string[];
+  farmerExpectation?: string;
 }
 
 interface ProjectModalProps {
@@ -177,6 +178,21 @@ export default function ProjectModal({
                     </div>
                   </div>
                 </div>
+
+                {selectedProject.farmerExpectation && (
+                  <div>
+                    <h4 className='font-bold text-slate-900 mb-3 flex items-center gap-2'>
+                      <Quote className='h-5 w-5 text-orange-500' />
+                      农户期待
+                    </h4>
+                    <div className='bg-orange-50 rounded-xl p-4 border border-orange-100 relative overflow-hidden'>
+                      <Quote className='absolute -top-2 -left-2 h-12 w-12 text-orange-100 -z-0 rotate-180' />
+                      <p className='text-slate-700 italic leading-relaxed relative z-10 pl-2'>
+                        “{selectedProject.farmerExpectation}”
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <h4 className='font-bold text-slate-900 mb-3 flex items-center gap-2'>

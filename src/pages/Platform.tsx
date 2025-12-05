@@ -1,12 +1,13 @@
 /** @format */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MarketStats from "../components/platform/MarketStats";
 import FilterBar from "../components/platform/FilterBar";
 import ProjectCard from "../components/platform/ProjectCard";
 import ProjectModal from "../components/platform/ProjectModal";
 import { projects } from "../data/story_success";
+import { toast } from "sonner";
 
 interface Project {
   id: number;
@@ -16,6 +17,7 @@ interface Project {
   volume: string;
   price: number;
   tags: string[];
+  farmerExpectation?: string;
 }
 
 export default function Platform() {
@@ -32,7 +34,9 @@ export default function Platform() {
     selectedCategory === "all"
       ? projects
       : projects.filter((p) => p.type === selectedCategory);
-
+  useEffect(function () {
+    toast.warning("本页面数据均为展示使用，目前还未实际投入使用");
+  }, []);
   return (
     <motion.div
       initial={{ opacity: 0 }}

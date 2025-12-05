@@ -2,8 +2,8 @@
 
 export const IMAGES = {
   HERO: {
-    BG: "https://picsum.photos/seed/forest_hero/1920/1080",
-    DASHBOARD: "https://picsum.photos/seed/satellite_view/800/600",
+    BG: "/src/assets/主页背景.png",
+    DASHBOARD: "/src/assets/主页面卫星图.png",
   },
   MONITORING: {
     SATELLITE_MAP:
@@ -31,4 +31,7 @@ export const IMAGES = {
     "https://picsum.photos/seed/carbon3/800/600",
     "https://picsum.photos/seed/carbon4/800/600",
   ],
+  THEMES: {
+    FIVE_FIELDS: "/src/assets/五大领域.png",
+  },
 };

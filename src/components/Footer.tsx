@@ -13,12 +13,18 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { IMAGES } from "../constants/images";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+
   const handleSubscribe = (e: FormEvent) => {
     e.preventDefault();
+    if (!email) {
+      toast.error("请输入您的邮箱地址。");
+      return;
+    }
     toast.success("订阅成功！感谢您的关注。");
   };
 
@@ -54,7 +60,7 @@ export default function Footer() {
             </motion.div>
 
             <p className='text-slate-400 leading-relaxed text-lg'>
-              连接乡村与企业，利用 AI 与区块链技术守护绿水青山，共创零碳未来。
+              连接乡村与企业，利用 AI 技术守护绿水青山，共创零碳未来。
               我们致力于打造最值得信赖的林业碳汇数字化交易平台。
             </p>
 
@@ -149,6 +155,8 @@ export default function Footer() {
                     type='email'
                     placeholder='您的邮箱地址'
                     className='w-full bg-slate-950 border border-slate-800 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-slate-600 focus:outline-none focus:border-eco-green-500 focus:ring-1 focus:ring-eco-green-500/50 transition-all'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <button className='w-full bg-gradient-to-r from-eco-green-600 to-teal-600 hover:from-eco-green-500 hover:to-teal-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-eco-green-900/20 hover:shadow-eco-green-500/20 flex items-center justify-center group'>

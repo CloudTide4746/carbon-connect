@@ -26,7 +26,6 @@ export default function Home() {
       <TeamShowcase />
       <SuccessStories />
       <CarbonCalculator />
-      <Partners />
       <CallToAction />
     </motion.div>
   );

@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import {
   Scan,
   Map,
@@ -14,12 +17,40 @@ import {
 } from "lucide-react";
 import { IMAGES } from "../constants/images";
 
+// Fix for default marker icon in Leaflet with React
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+
+const DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
+
+// Coordinates around Pu'er, Yunnan (approx 22.78, 100.97)
 const locations = [
-  { id: 1, x: 20, y: 30, label: "A-01区" },
-  { id: 2, x: 50, y: 60, label: "B-03区" },
-  { id: 3, x: 70, y: 25, label: "C-07区" },
-  { id: 4, x: 35, y: 75, label: "D-12区" },
+  { id: 1, lat: 22.785, lng: 100.975, label: "A-01区" },
+  { id: 2, lat: 22.765, lng: 100.955, label: "B-03区" },
+  { id: 3, lat: 22.795, lng: 100.995, label: "C-07区" },
+  { id: 4, lat: 22.755, lng: 100.985, label: "D-12区" },
 ];
+
+const createCustomIcon = () => {
+  return L.divIcon({
+    className: "custom-marker",
+    html: `
+      <div class="relative">
+        <div class="absolute -top-3 -left-3 w-6 h-6 border border-eco-green-400 rounded-full animate-ping"></div>
+        <div class="absolute -top-1 -left-1 w-2 h-2 bg-eco-green-400 rounded-full"></div>
+      </div>
+    `,
+    iconSize: [0, 0], // Size handled by CSS
+    iconAnchor: [0, 0],
+  });
+};
 
 export default function LiveMonitoring() {
   const [scanned, setScanned] = useState<number[]>([]);
@@ -111,45 +142,50 @@ export default function LiveMonitoring() {
 
         <div className='grid lg:grid-cols-3 gap-8'>
           {/* 主监控画面 */}
-          <div className='lg:col-span-2 relative bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl h-[500px] group'>
-            {/* 地图底图 */}
-            <img
-              src={IMAGES.MONITORING.SATELLITE_MAP}
-              alt='Satellite Map'
-              className='w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700'
-            />
+          <div className='lg:col-span-2 relative bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl h-[500px] group z-0'>
+            <MapContainer
+              center={[22.78, 100.97]}
+              zoom={13}
+              style={{ height: "100%", width: "100%" }}
+              className='z-0'
+              zoomControl={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                className='opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700'
+              />
+
+              {locations.map((loc) =>
+                scanned.includes(loc.id) ? (
+                  <Marker
+                    key={loc.id}
+                    position={[loc.lat, loc.lng]}
+                    icon={createCustomIcon()}
+                  >
+                    <Tooltip
+                      direction='right'
+                      offset={[10, 0]}
+                      opacity={1}
+                      permanent
+                      className='custom-tooltip bg-transparent border-none shadow-none p-0'
+                    >
+                      <div className='bg-black/80 text-eco-green-400 text-xs px-2 py-1 rounded border border-eco-green-400/30 whitespace-nowrap backdrop-blur-md'>
+                        {loc.label} <br />
+                        <span className='text-white'>固碳率正常</span>
+                      </div>
+                    </Tooltip>
+                  </Marker>
+                ) : null
+              )}
+            </MapContainer>
 
             {/* 扫描线动画 */}
             <motion.div
               animate={{ top: ["0%", "100%"] }}
               transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className='absolute left-0 w-full h-1 bg-eco-green-500/50 shadow-[0_0_20px_rgba(16,185,129,0.5)] z-10'
+              className='absolute left-0 w-full h-1 bg-eco-green-500/50 shadow-[0_0_20px_rgba(16,185,129,0.5)] z-10 pointer-events-none'
             />
-
-            {/* 动态标记点 */}
-            {locations.map((loc) => (
-              <div
-                key={loc.id}
-                className='absolute'
-                style={{ left: `${loc.x}%`, top: `${loc.y}%` }}
-              >
-                {scanned.includes(loc.id) && (
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0, opacity: 0 }}
-                    className='relative'
-                  >
-                    <div className='absolute -top-3 -left-3 w-6 h-6 border border-eco-green-400 rounded-full animate-ping' />
-                    <div className='w-2 h-2 bg-eco-green-400 rounded-full' />
-                    <div className='absolute left-4 top-0 bg-black/80 text-eco-green-400 text-xs px-2 py-1 rounded border border-eco-green-400/30 whitespace-nowrap backdrop-blur-md'>
-                      {loc.label} <br />
-                      <span className='text-white'>固碳率正常</span>
-                    </div>
-                  </motion.div>
-                )}
-              </div>
-            ))}
 
             {/* HUD 元素 */}
             <div className='absolute top-4 left-4 flex gap-2'>

@@ -55,11 +55,6 @@ const techSpecs = [
     title: "分布式存储",
     desc: "PB级时空数据存储，确保历史数据永久追溯",
   },
-  {
-    icon: Shield,
-    title: "区块链确权",
-    desc: "每一吨碳汇都有链上唯一凭证，不可篡改",
-  },
 ];
 
 export default function FeaturesPage() {
